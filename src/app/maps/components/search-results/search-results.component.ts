@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MapService, PlacesService } from '../../services';
 import { Feature } from '../../interfaces/places';
+import { Route } from '../../interfaces/directions';
 
 @Component({
   selector: 'app-search-results',
@@ -27,5 +28,13 @@ export class SearchResultsComponent implements OnInit {
     const [lng,lat] = place.center; 
     this.mapService.flyTo([lng,lat]);   
   }
+  getDirectiones(place:Feature){
+    if(!this.placesService.userLocation) throw new Error("Necesita localización");
+    const start=this.placesService.userLocation;
+    const end = place.center as [number,number];
+    this.placesService.deletePlaces();
+    this.mapService.getRouteBetweenPoints(start,end);
+  }
 
+  
 }
